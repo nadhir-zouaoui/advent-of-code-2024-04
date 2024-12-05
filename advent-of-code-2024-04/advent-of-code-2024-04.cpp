@@ -4,55 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-int valide(std::string ch, std::string ch1) {
-    if (ch == "MAS" && ch==ch1)
-        return 1;
-    else return 0;
-}
-std::string rightLowerDiag(std::string content, int maxLength, int i, int lineSize) {
-    std::string test;
-    int j = i;
-    int count = 0;
-    while (j < maxLength && count < 3) {
-        test += content[j];
-        j += lineSize+1;
-        count++;
-    }
-    return test;
-}
-std::string leftLowerDiag(std::string content, int maxLength, int i, int lineSize) {
-    std::string test;
-    int j = i;
-    int count = 0;
-    while (j < maxLength && count < 3) {
-        test += content[j];
-        j += lineSize - 1;
-        count++;
-    }
-    return test;
-}
-std::string rightUpperDiag(std::string content, int maxLength, int i, int lineSize) {
-    std::string test;
-    int j = i;
-    int count = 0;
-    while (j >= 0 && count < 3) {
-        test += content[j];
-        j = j - lineSize + 1;
-        count++;
-    }
-    return test;
-}
-std::string leftUpperDiag(std::string content, int maxLength, int i, int lineSize) {
-    std::string test;
-    int j = i;
-    int count = 0;
-    while (j >= 0 && count < 3) {
-        test += content[j];
-        j -= lineSize +1 ;
-        count++;
-    }
-    return test;
-}
 
 
 int main()
@@ -71,18 +22,39 @@ int main()
     int maxLength = content.size();
     std::string test1;
     std::string test2;
+    
     for (int i = 0; i < maxLength; i++)
     {
-        if (content[i]=='M')
+        if (content[i]=='A')
         {
-            test1 = rightLowerDiag(content, maxLength, i, lineSize);
-            i += 2;
-            test2 = leftLowerDiag(content, maxLength, i, lineSize);
-            s += valide(test1,test2);
-            test1 = rightUpperDiag(content, maxLength, i, lineSize);
-            test2 = leftUpperDiag(content, maxLength, i , lineSize);
-            s += valide(test1,test2);
+            bool TopLeftToRightBottom = false;
+            bool RightTopToLeftBottom = false;
+            bool leftBottomToRightTop = false;
+            bool rightBottomToTopLeft = false;
+            if (i >= lineSize + 1 && i + lineSize + 1 < maxLength && content[i - lineSize - 1] == 'M' && content[i + lineSize + 1] == 'S') {
+                TopLeftToRightBottom = true;
+            }
+            if (i >= lineSize - 1 && i + lineSize - 1 < maxLength && content[i + lineSize - 1] == 'S' && content[i - lineSize + 1]=='M')
+            {
+                RightTopToLeftBottom =true;
+            }
+            if (i >= lineSize - 1 && i + lineSize - 1 < maxLength && content[i + lineSize - 1] == 'M' && content[i - lineSize + 1]=='S')
+            {
+                leftBottomToRightTop = true;
+            }
+            if (i >= lineSize + 1 && i + lineSize + 1 < maxLength && content[i + lineSize + 1] == 'M' && content[i - lineSize -1] == 'S')
+            {
+                rightBottomToTopLeft = true;
+            }
+            if ((TopLeftToRightBottom && RightTopToLeftBottom) ||
+                (TopLeftToRightBottom && leftBottomToRightTop) || 
+                (rightBottomToTopLeft && RightTopToLeftBottom) || 
+                (rightBottomToTopLeft && leftBottomToRightTop))
+            {
+                s++;
+            }
         }
+
     }
     std::cout << s << std::endl;
     std::cout << "Hello World!\n";
