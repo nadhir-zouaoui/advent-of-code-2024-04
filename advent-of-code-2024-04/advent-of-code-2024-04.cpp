@@ -41,14 +41,19 @@ int main()
     int maxLength = content.size();
     for (int i = 0; i < maxLength; i++)
     {
-        if (content[i]=='A')
-        {
-            std::string diag1 = subStringAroundChar(content, i, lineSize + 1);
-            std::string diag2 = subStringAroundChar(content, i, lineSize - 1);
-            std::string diag3 = subStringAroundChar(content, i, -lineSize + 1);
-            std::string diag4 = subStringAroundChar(content, i, -lineSize - 1);
-            s += isValidXmasString(diag1, diag3) + isValidXmasString(diag1, diag2) + isValidXmasString(diag2, diag3) + isValidXmasString(diag3, diag4) + isValidXmasString(diag2, diag4) + isValidXmasString(diag4, diag1);
-        }
+        if (content[i] != 'A') continue;
+
+        std::string diag1 = subStringAroundChar(content, i, lineSize + 1);
+        std::string diag2 = subStringAroundChar(content, i, lineSize - 1);
+        std::string diag3 = subStringAroundChar(content, i, -lineSize + 1);
+        std::string diag4 = subStringAroundChar(content, i, -lineSize - 1);
+
+        s += isValidXmasString(diag1, diag3) 
+            + isValidXmasString(diag1, diag2) 
+            + isValidXmasString(diag2, diag3) 
+            + isValidXmasString(diag3, diag4) 
+            + isValidXmasString(diag2, diag4) 
+            + isValidXmasString(diag4, diag1);
 
     }
     std::cout << s << std::endl;
