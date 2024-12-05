@@ -5,6 +5,25 @@
 #include <fstream>
 #include <string>
 
+int isValidXmasString(std::string diag1, std::string diag2) {
+    if (diag1 == "MAS" && diag2 == "MAS")
+        return 1;
+    else return 0;
+}
+std::string subStringAroundChar(std::string content, int startIndex, int step) {
+    std::string test;
+    int j = startIndex;
+    j -= step;
+    if (j <= 0 || j > content.size()) return test;
+    test += content[j];
+    j += step;
+    if (j <= 0 || j > content.size()) return test;
+    test += content[j];
+    j += step;
+    if (j <= 0 || j > content.size()) return test;
+    test += content[j];
+    return test;
+}
 
 int main()
 {
@@ -20,39 +39,15 @@ int main()
     std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     int s = 0;
     int maxLength = content.size();
-    std::string test1;
-    std::string test2;
-    
     for (int i = 0; i < maxLength; i++)
     {
         if (content[i]=='A')
         {
-            bool TopLeftToRightBottom = false;
-            bool RightTopToLeftBottom = false;
-            bool leftBottomToRightTop = false;
-            bool rightBottomToTopLeft = false;
-            if (i >= lineSize + 1 && i + lineSize + 1 < maxLength && content[i - lineSize - 1] == 'M' && content[i + lineSize + 1] == 'S') {
-                TopLeftToRightBottom = true;
-            }
-            if (i >= lineSize - 1 && i + lineSize - 1 < maxLength && content[i + lineSize - 1] == 'S' && content[i - lineSize + 1]=='M')
-            {
-                RightTopToLeftBottom =true;
-            }
-            if (i >= lineSize - 1 && i + lineSize - 1 < maxLength && content[i + lineSize - 1] == 'M' && content[i - lineSize + 1]=='S')
-            {
-                leftBottomToRightTop = true;
-            }
-            if (i >= lineSize + 1 && i + lineSize + 1 < maxLength && content[i + lineSize + 1] == 'M' && content[i - lineSize -1] == 'S')
-            {
-                rightBottomToTopLeft = true;
-            }
-            if ((TopLeftToRightBottom && RightTopToLeftBottom) ||
-                (TopLeftToRightBottom && leftBottomToRightTop) || 
-                (rightBottomToTopLeft && RightTopToLeftBottom) || 
-                (rightBottomToTopLeft && leftBottomToRightTop))
-            {
-                s++;
-            }
+            std::string diag1 = subStringAroundChar(content, i, lineSize + 1);
+            std::string diag2 = subStringAroundChar(content, i, lineSize - 1);
+            std::string diag3 = subStringAroundChar(content, i, -lineSize + 1);
+            std::string diag4 = subStringAroundChar(content, i, -lineSize - 1);
+            s += isValidXmasString(diag1, diag3) + isValidXmasString(diag1, diag2) + isValidXmasString(diag2, diag3) + isValidXmasString(diag3, diag4) + isValidXmasString(diag2, diag4) + isValidXmasString(diag4, diag1);
         }
 
     }
